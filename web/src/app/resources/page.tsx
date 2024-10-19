@@ -2,7 +2,11 @@ import ResourceComponent from '@/components/Autocomplete'
 import React from 'react'
 
 const ResourcesPage = () => {
-  return <ResourceComponent />
+  return (
+    <>
+      <ResourceComponent />
+    </>
+  )
 }
 
 export default ResourcesPage

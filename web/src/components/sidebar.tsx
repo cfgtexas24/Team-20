@@ -13,6 +13,7 @@ import {
   X,
   LucideIcon,
   Bell,
+  Map,
 } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -90,8 +91,8 @@ const Sidebar = () => {
             <NavButton href='/livecall' icon={Users}>
               Live Call
             </NavButton>
-            <NavButton href='/video' icon={Video}>
-              Video
+            <NavButton href='/resources' icon={Map}>
+              Resources
             </NavButton>
           </>
         )}
