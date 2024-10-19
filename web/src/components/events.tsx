@@ -1,151 +1,184 @@
-import React from 'react'
+'use client'
+
+import { useState } from 'react'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import YoutubeVideos from './youtube-videos'
+import { MapPin, MessageSquare, Award, DollarSign } from 'lucide-react'
+import EventCard from './eventcard'
+import { toast } from '@/hooks/use-toast'
+import { usePoints } from '@/hooks/usePoints'
 
-interface EventItemProps {
-  icon: React.ReactNode
-  title: string
-  description: string
-  buttonText: string
-  additionalContent?: React.ReactNode
-}
-
-const EventItem: React.FC<EventItemProps> = ({
+const NavigationButton = ({
+  href,
   icon,
-  title,
-  description,
-  buttonText,
-  additionalContent,
+  children,
+}: {
+  href: string
+  icon: React.ReactNode
+  children: React.ReactNode
 }) => (
-  <div className='self-stretch p-6 bg-[#8e94aa]/10 rounded-2xl border border-[#8e94aa]/10 justify-start items-center gap-6 inline-flex'>
-    <div className='p-2 bg-gradient-to-b from-[#e0effc] to-[#ddcbfb] rounded-[999px] border border-[#b07afa]/50 flex-col justify-start items-start gap-2 inline-flex'>
-      {icon}
-    </div>
-    <div className='grow shrink basis-0 flex-col justify-center items-start gap-1 inline-flex'>
-      <div className='self-stretch text-[#393f55] text-lg font-bold'>
-        {title}
-      </div>
-      <div className='self-stretch text-[#6d748a] text-sm'>{description}</div>
-      {additionalContent}
-    </div>
+  <Link href={href} className='w-full'>
     <Button
       variant='outline'
-      className='px-2 py-1 bg-[#e9edfe] rounded-2xl shadow-inner border border-[#8e94aa]/30'
+      className='w-full mb-3 flex items-center justify-start space-x-2 py-6'
     >
-      {buttonText}
+      {icon}
+      <span>{children}</span>
     </Button>
-  </div>
+  </Link>
 )
 
-interface SectionProps {
-  title: string
-  description: string
-  children: React.ReactNode
-  actionButton?: React.ReactNode
-}
+const HomeDashboard = () => {
+  const [events, setEvents] = useState([
+    {
+      id: 1,
+      name: 'Grit & Growth 2024',
+      dateTime: '2024-11-09',
+      location: 'STORM Center',
+      description:
+        "STORM's 3rd Annual Grit & Growth Community Experience: 'Who I Choose to Become, I Will Become'. Join us for a day of inspiration and transformation!",
+      category: 'flagship',
+      rsvped: false,
+      link: 'https://www.stormcohs.org/copy-of-events39393a52',
+      points: 300,
+    },
+    {
+      id: 2,
+      name: 'North Texas Giving Day 2024',
+      dateTime: '2024-09-19',
+      location: 'Online',
+      description:
+        'Support STORM during North Texas Giving Day! Your donations help us continue providing free services to youth and young adults.',
+      category: 'flagship',
+      rsvped: false,
+      link: 'https://www.stormcohs.org/newpage9ec8a741',
+      points: 200,
+    },
+    {
+      id: 3,
+      name: 'Holiday Toy Drive',
+      dateTime: '2024-12-10 10:00 AM',
+      location: 'STORM Center',
+      description:
+        'Donate new, unwrapped toys to bring joy to children in need this holiday season.',
+      category: 'community',
+      rsvped: false,
+      link: 'https://www.stormcohs.org/',
+      points: 100,
+    },
+  ])
 
-const Section: React.FC<SectionProps> = ({
-  title,
-  description,
-  children,
-  actionButton,
-}) => (
-  <div className='self-stretch flex-col justify-start items-start gap-10 flex'>
-    <div className='self-stretch justify-start items-start gap-6 inline-flex'>
-      <div className='grow shrink basis-0 flex-col justify-start items-start gap-4 inline-flex'>
-        <div className='self-stretch h-[66px] flex-col justify-start items-start gap-2 flex'>
-          <div className='self-stretch justify-start items-center gap-3 inline-flex'>
-            <div className='justify-start items-center gap-1 flex'>
-              <div className='text-[#040816] text-[32px] font-black'>
-                {title}
-              </div>
-            </div>
+  const { addPoints, subtractPoints } = usePoints()
+
+  const handleRSVP = async (eventId: number, points: number) => {
+    try {
+      const event = events.find((e) => e.id === eventId)
+      if (!event) throw new Error('Event not found')
+
+      const action = event.rsvped ? 'subtract' : 'add'
+
+      // Update points on the server
+      const response = await fetch('/api/points', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action,
+          amount: points,
+        }),
+      })
+
+      if (!response.ok) throw new Error('Failed to update points')
+
+      // Update local state
+      setEvents(
+        events.map((event) =>
+          event.id === eventId ? { ...event, rsvped: !event.rsvped } : event
+        )
+      )
+
+      // Update global points state
+      if (action === 'add') {
+        addPoints(points)
+      } else {
+        subtractPoints(points)
+      }
+
+      // Show success toast
+      toast({
+        title: event.rsvped ? 'RSVP Cancelled' : 'RSVP Confirmed',
+        description: event.rsvped
+          ? `You've cancelled your RSVP for ${event.name}.`
+          : `You've RSVP'd for ${event.name} and earned ${points} points!`,
+      })
+    } catch (error) {
+      console.error('Error updating RSVP:', error)
+      toast({
+        title: 'Error',
+        description: 'Failed to update RSVP. Please try again.',
+        variant: 'destructive',
+      })
+    }
+  }
+  return (
+    <div className='container mx-auto px-4 py-6 sm:py-8'>
+      <h1 className='text-2xl sm:text-3xl font-bold mb-6 text-center sm:text-left'>
+        Welcome to Your Dashboard
+      </h1>
+
+      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
+        <div className='sm:col-span-2 lg:col-span-1 order-2 sm:order-1'>
+          <h2 className='text-xl font-bold mb-4'>Quick Links</h2>
+          <div className='grid grid-cols-2 sm:grid-cols-1 gap-3'>
+            <NavigationButton
+              href='/resources'
+              icon={<MapPin className='w-5 h-5' />}
+            >
+              Find Resources
+            </NavigationButton>
+            <NavigationButton
+              href='/meetings'
+              icon={<MessageSquare className='w-5 h-5' />}
+            >
+              Talk with Mentor
+            </NavigationButton>
+            <NavigationButton
+              href='/community-chat'
+              icon={<Award className='w-5 h-5' />}
+            >
+              Community Chat
+            </NavigationButton>
+            <NavigationButton
+              href='/rewards'
+              icon={<DollarSign className='w-5 h-5' />}
+            >
+              Rewards
+            </NavigationButton>
           </div>
-          <div className='self-stretch text-[#393f55] text-sm'>
-            {description}
+        </div>
+
+        <div className='sm:col-span-2 order-1 sm:order-2'>
+          <h2 className='text-xl font-bold mb-4'>Upcoming Events</h2>
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
+            {events.map((event) => (
+              <EventCard key={event.id} event={event} onRSVP={handleRSVP} />
+            ))}
+          </div>
+          <div className='mt-4 text-center sm:text-right'>
+            <Link href='/events'>
+              <Button variant='link'>View All Events</Button>
+            </Link>
           </div>
         </div>
       </div>
-      {actionButton}
-    </div>
-    <div className='self-stretch flex-col justify-start items-start gap-4 flex'>
-      {children}
-    </div>
-  </div>
-)
 
-const EventsPage: React.FC = () => {
-  const currentEvents = [
-    {
-      icon: <div className='w-4 h-4 relative'></div>,
-      title: 'Select and replace',
-      description:
-        'Select all entities that match your query and replace them with an input',
-      buttonText: 'Set up',
-    },
-    {
-      icon: <div className='w-4 h-4 relative'></div>,
-      title: 'Schedule maintenance',
-      description: 'Schedule maintenance for when the app will shut down',
-      buttonText: 'Schedule',
-    },
-    {
-      icon: <div className='w-4 h-4 relative'></div>,
-      title: 'Fix broken nodes',
-      description: 'Run analyzis and fix broken entities',
-      buttonText: 'Run analyzis',
-    },
-  ]
-
-  const previousEvents = [
-    {
-      icon: <div className='w-4 h-4 relative'></div>,
-      title: 'Select and replace',
-      description: '',
-      buttonText: 'View logs',
-      additionalContent: (
-        <div className='justify-start items-center gap-2 inline-flex'>
-          <div className='h-[26px] px-2 py-1 bg-white rounded-lg border border-[#ccd2e8] justify-center items-center flex'>
-            <div className='text-[#6d748a] text-sm'>neutral-grey-600</div>
-          </div>
-          <div className='text-[#0a071b] text-sm'>-&gt;</div>
-          <div className='h-[26px] px-2 py-1 bg-white rounded-lg border border-[#ccd2e8] justify-center items-center flex'>
-            <div className='text-[#6d748a] text-sm'>neutral-grey-600</div>
-          </div>
-        </div>
-      ),
-    },
-    // Add more previous events as needed
-  ]
-
-  return (
-    <div className='w-full flex-col justify-start items-start gap-20 inline-flex'>
-      <Section
-        title='Events'
-        description='Create and manage events'
-        actionButton={
-          <Button
-            variant='secondary'
-            className='px-3 py-2 bg-[#e9edfe] rounded-xl shadow-inner border border-[#8e94aa]/30'
-          >
-            New event
-          </Button>
-        }
-      >
-        {currentEvents.map((event, index) => (
-          <EventItem key={index} {...event} />
-        ))}
-      </Section>
-
-      <Section title='Previous events' description='View past events'>
-        {previousEvents.map((event, index) => (
-          <EventItem key={index} {...event} />
-        ))}
-      </Section>
-
-      <YoutubeVideos />
+      <div className='mt-8'>
+        <YoutubeVideos />
+      </div>
     </div>
   )
 }
 
-export default EventsPage
+export default HomeDashboard

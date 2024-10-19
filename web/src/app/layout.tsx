@@ -1,7 +1,10 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import './globals.css'
-import { ClerkProvider, SignedIn, SignedOut, SignIn, UserButton} from '@clerk/nextjs'
+import Sidebar from '@/components/sidebar'
+import Navbar from '@/components/navbar'
+import { ClerkProvider, SignedIn, SignedOut, SignIn } from '@clerk/nextjs'
+import { Toaster } from '@/components/ui/toaster'
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -29,22 +32,18 @@ export default function RootLayout({
       <html lang='en'>
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >             
-         <main className='w-screen h-screen'>
-                  <div className='flex w-full h-full items-center justify-center'>
-              <header className="flex justify-between">
-              <UserButton showName />
-              </header>  
-                {/* Signed Out routes to the clerk login */}
-                <SignedOut>
-                  <SignIn routing="hash" />
-                </SignedOut>
-                {/* Signed in allows for content to be hidden unless user is signed in */}
-                <SignedIn>
-                  {children}
-                </SignedIn>
-                  </div>
+        >
+          <div className='flex flex-col h-screen'>
+            <div className='h-16 z-10 w-full mb-6'>
+              <Navbar />
+            </div>
+            <div className='flex flex-col md:flex-row flex-1 w-full border-b border'>
+              <Sidebar />
+              <main className='flex-1 overflow-y-auto w-full px-4 md:px-8 lg:px-20 mt-8'>
+                {children}
               </main>
+            </div>
+          </div>
         </body>
       </html>
     </ClerkProvider>
