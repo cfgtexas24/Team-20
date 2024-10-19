@@ -1,0 +1,101 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+
+model User {
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  username  String
+  points    Int       @default(0)
+  age       Int?
+  gender    String?
+  avatar    Avatar?
+  purchases Purchase[]
+  events    UserEvent[]
+  videos    UserVideo[]
+  transactions Transaction[]
+}
+
+model Avatar {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int      @unique
+  clothes   Clothing[]
+}
+
+model Clothing {
+  id        Int      @id @default(autoincrement())
+  name      String
+  price     Int
+  avatars   Avatar[] // No need to define `@relation` here for many-to-many
+  purchases Purchase[]
+}
+
+model Purchase {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  clothing  Clothing @relation(fields: [clothingId], references: [id])
+  clothingId Int
+  createdAt DateTime @default(now())
+}
+
+model Event {
+  id        Int      @id @default(autoincrement())
+  name      String
+  description String
+  pointsRewarded Int
+  users     UserEvent[]
+  createdAt DateTime @default(now())
+}
+
+model UserEvent {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  event     Event    @relation(fields: [eventId], references: [id])
+  eventId   Int
+  earnedPoints Int
+  participatedAt DateTime @default(now())
+}
+
+model Video {
+  id        Int      @id @default(autoincrement())
+  title     String
+  url       String
+  pointsRewarded Int
+  users     UserVideo[]
+  createdAt DateTime @default(now())
+}
+
+model UserVideo {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  video     Video    @relation(fields: [videoId], references: [id])
+  videoId   Int
+  earnedPoints Int
+  watchedAt DateTime @default(now())
+}
+
+model Transaction {
+  id          Int      @id @default(autoincrement())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      Int
+  pointsChange Int
+  description String
+  createdAt   DateTime @default(now())
+}
