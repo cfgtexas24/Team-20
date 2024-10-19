@@ -1,3 +1,4 @@
+'use client'
 import React, { useState } from 'react';
 
 interface Reward {
@@ -7,8 +8,8 @@ interface Reward {
 }
 
 const Rewards: React.FC = () => {
-  const [earnedPoints, setEarnedPoints] = useState<number>(1250);
-  const [rewards, setRewards] = useState<Reward[]>([
+  const [earnedPoints] = useState<number>(1250);
+  const [rewards] = useState<Reward[]>([
     { id: 1, name: "Giftcard", points: 500 },
     { id: 2, name: "Transportation voucher", points: 750 },
     { id: 3, name: "Free meal", points: 1000 },
