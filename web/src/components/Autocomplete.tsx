@@ -13,6 +13,9 @@ import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Spinner } from './Spinner'
+import logoIcon from '../../public/Storm_Partner.png'; // Import the local image
+
+
 
 type Option = {
   value: string
@@ -24,6 +27,7 @@ type Location = {
   lng: number
   name: string
   address?: string
+  stormLocation: boolean
 }
 
 const options: Option[] = [
@@ -37,6 +41,25 @@ const options: Option[] = [
   { value: 'career_services', label: 'Career Services' },
   { value: 'hospital', label: 'Medical Help' },
 ]
+
+const stormHouseOptions: Location[] = [
+  {
+    lat: 32.787870,
+    lng: -96.786885,
+    name: 'Dallas CASA',
+    address: '2757 Swiss Ave, Dallas, TX 75204',
+    stormLocation: true,
+  },
+  {
+    lat: 32.8105000,
+    lng: -96.860172,
+    name: 'Dallas Metro Homeless Alliance (Housing Forward)',
+    address: '3000 Pegasus Park Dr, Dallas, TX 75247',
+    stormLocation: true,
+  },
+]
+
+const regularIcon = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png';
 
 const ResourceComponent: React.FC = () => {
   const inputRef = useRef<google.maps.places.SearchBox | null>(null)
@@ -107,8 +130,13 @@ const ResourceComponent: React.FC = () => {
               lng: place.geometry?.location?.lng() || 0,
               name: place.name || '',
               address: place.formatted_address || '',
+              stormLocation: false,
             }))
-            setLocations(newLocations)
+            if (selectedOption.value === 'emergency_shelter') {
+              setLocations([...newLocations, ...stormHouseOptions])
+            } else{
+              setLocations(newLocations)
+            }
           } else {
             setError('No results found. Please try a different search.')
           }
@@ -187,12 +215,21 @@ const ResourceComponent: React.FC = () => {
                 zoom={zoom}
               >
                 {locations.map((loc, index) => (
-                  <Marker
-                    key={index}
-                    position={{ lat: loc.lat, lng: loc.lng }}
-                    onClick={() => setSelectedLocation(loc)}
-                    title={loc.name}
-                  />
+                  loc.stormLocation ? 
+                    <Marker
+                      key={index}
+                      position={{ lat: loc.lat, lng: loc.lng }}
+                      onClick={() => setSelectedLocation(loc)}
+                      title={loc.name}
+                      icon={{url: logoIcon.src, scaledSize: new google.maps.Size(60, 60)}}
+                    />
+                    :
+                    <Marker
+                      key={index}
+                      position={{ lat: loc.lat, lng: loc.lng }}
+                      onClick={() => setSelectedLocation(loc)}
+                      title={loc.name}
+                    />
                 ))}
                 {selectedLocation && (
                   <InfoWindow

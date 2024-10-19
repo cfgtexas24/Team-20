@@ -5,6 +5,7 @@ import Sidebar from '@/components/sidebar'
 import Navbar from '@/components/navbar'
 import { ClerkProvider, SignedIn, SignedOut, SignIn } from '@clerk/nextjs'
 import { Toaster } from '@/components/ui/toaster'
+import Chatbot from '@/components/chatbot'
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -46,6 +47,7 @@ export default function RootLayout({
                 </main>
               </div>
             </div>
+            <Chatbot />
           </SignedIn>
           <SignedOut>
             <div className='flex items-center justify-center w-screen h-screen'>
