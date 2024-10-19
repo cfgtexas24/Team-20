@@ -32,9 +32,7 @@ export default function RootLayout({
         >             
          <main className='w-screen h-screen'>
                   <div className='flex w-full h-full items-center justify-center'>
-                  <SignIn routing="hash" />
               <header className="flex justify-between">
-              <h1>STORM Connect</h1>
               <UserButton showName />
               </header>  
                 {/* Signed Out routes to the clerk login */}
