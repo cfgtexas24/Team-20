@@ -1,9 +1,10 @@
-'use client'
 
-import React, { useEffect } from 'react'
-import { useDyteClient, DyteProvider } from '@dytesdk/react-web-core'
-import MyMeeting from '../../../LiveVideoComponents/MyMeeting'
-import { env } from '@/env.mjs'
+'use client'; 
+
+import { useEffect } from 'react';
+import { useDyteClient, DyteProvider } from '@dytesdk/react-web-core';
+import MyMeeting from '../../../LiveVideoComponents/MyMeeting';
+import { env } from '@/env.mjs';
 
 const LoadingFallback = () => (
   <div className='flex flex-col items-center justify-center h-screen bg-gray-100'>
@@ -14,30 +15,31 @@ const LoadingFallback = () => (
   </div>
 )
 
-const LiveVideoPage = () => {
-  const [meeting, initMeeting] = useDyteClient()
+export default function LiveVideoPage() {
+  // use Dtye Client
+  const [meeting, initMeeting] = useDyteClient();
 
   useEffect(() => {
-    const authToken1 = env.NEXT_PUBLIC_AUTH_TOKEN
+    // Grabs token from local env for security purposes
+    const authToken1 = env.NEXT_PUBLIC_AUTH_TOKEN; 
 
     if (authToken1) {
       initMeeting({
         authToken: authToken1,
+        // auto set audio / video off when you join the meeting
         defaults: {
           audio: false,
           video: false,
         },
-      })
+      });
     }
-  }, [initMeeting])
+  }, []);
 
   return (
-    <div className='live-video-container'>
-      <DyteProvider value={meeting} fallback={<LoadingFallback />}>
+    <div className="live-video-container">
+      <DyteProvider value={meeting} fallback={<i>Loading...</i>}>
         <MyMeeting />
       </DyteProvider>
     </div>
-  )
+  );
 }
-
-export default LiveVideoPage

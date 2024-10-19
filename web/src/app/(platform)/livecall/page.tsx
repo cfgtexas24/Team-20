@@ -1,5 +1,5 @@
 import React from 'react'
-import Link from 'next/link'
+import Link from 'next/link';
 
 const LiveCall = () => {
   return (
@@ -11,15 +11,22 @@ const LiveCall = () => {
         <p className='text-gray-600 mb-6'>
           Connect with your mentor in real-time through our live video platform.
         </p>
+<<<<<<< Updated upstream:web/src/app/(platform)/livecall/page.tsx
         <Link
           href='/livecall/live'
           className='block w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded text-center transition duration-300'
+=======
+        <Link 
+          href='/meetings/live' 
+          className='text-blue-500 underline'
+>>>>>>> Stashed changes:web/src/app/meetings/page.tsx
         >
           Join Mentor Meeting
         </Link>
       </div>
     </div>
-  )
+  );
 }
+
 
 export default LiveCall
