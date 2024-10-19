@@ -12,7 +12,7 @@ const LiveCall = () => {
           Connect with your mentor in real-time through our live video platform.
         </p>
         <Link
-          href='/livecall/live'
+          href='/meetings/live'
           className='block w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded text-center transition duration-300'
         >
           Join Mentor Meeting
