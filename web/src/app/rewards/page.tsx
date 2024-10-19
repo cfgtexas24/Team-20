@@ -37,36 +37,39 @@ const RewardCard: React.FC<{
   }
 
   return (
-    <div className='bg-white p-6 rounded-lg shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-300'>
-      <div className='flex items-center mb-4'>
-        <div className='mr-4 text-blue-500'>{reward.icon}</div>
-        <div>
-          <h3 className='text-lg font-semibold'>{reward.name}</h3>
-          <p className='text-gray-600 text-sm'>{reward.points} points</p>
-        </div>
-      </div>
-      <p className='text-gray-600 mb-4 text-sm'>{reward.description}</p>
-      <div className='flex space-x-2'>
-        <Button
-          onClick={handleRedeem}
-          disabled={earnedPoints < reward.points}
-          variant={earnedPoints >= reward.points ? 'default' : 'secondary'}
-          className='flex-1'
-        >
-          {earnedPoints >= reward.points
-            ? 'Redeem'
-            : `Need ${reward.points - earnedPoints} more`}
-        </Button>
-        <Button
-          onClick={handleCashOut}
-          disabled={earnedPoints < reward.points}
-          variant='outline'
-          className='flex-1'
-        >
-          Cash Out
-        </Button>
+    <div className='bg-white p-6 rounded-lg shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-300 flex flex-col justify-between h-full'>
+  <div>
+    <div className='flex items-center mb-4'>
+      <div className='mr-4 text-blue-500'>{reward.icon}</div>
+      <div>
+        <h3 className='text-lg font-semibold'>{reward.name}</h3>
+        <p className='text-gray-600 text-sm'>{reward.points} points</p>
       </div>
     </div>
+    <p className='text-gray-600 mb-4 text-sm'>{reward.description}</p>
+  </div>
+
+  <div className='flex flex-col space-y-2 mt-auto'>
+    <Button
+      onClick={handleRedeem}
+      disabled={earnedPoints < reward.points}
+      variant={earnedPoints >= reward.points ? 'default' : 'secondary'}
+      className='w-full'
+    >
+      {earnedPoints >= reward.points
+        ? 'Redeem'
+        : `Need ${reward.points - earnedPoints} more`}
+    </Button>
+    <Button
+      onClick={handleCashOut}
+      disabled={earnedPoints < reward.points}
+      variant='outline'
+      className='w-full'
+    >
+      Cash Out
+    </Button>
+  </div>
+</div>
   )
 }
 

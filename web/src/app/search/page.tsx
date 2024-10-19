@@ -62,7 +62,7 @@ const SearchPage = () => {
   }, [searchTerm])
 
   return (
-    <div className='min-h-screen bg-gradient-to-b from-blue-100 to-white'>
+    <div className='min-h-screen'>
       <div className='container mx-auto px-4 py-8'>
         <h1 className='text-3xl md:text-4xl font-bold mb-6 text-center text-blue-800'>
           STORM Center of Hope & Service
@@ -76,6 +76,7 @@ const SearchPage = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className='w-full pl-10 pr-4 py-2 rounded-full border-2 border-blue-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50'
+              style={{backgroundColor: 'white', border: '6px solid #E5E7EB'}}
             />
             <Search className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400' />
           </div>

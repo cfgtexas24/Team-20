@@ -13,15 +13,18 @@ const NavigationButton = ({
   href,
   icon,
   children,
+  style,
 }: {
   href: string
   icon: React.ReactNode
   children: React.ReactNode
+  style?: React.CSSProperties
 }) => (
   <Link href={href} className='w-full'>
     <Button
       variant='outline'
       className='w-full mb-3 flex items-center justify-start space-x-2 py-6'
+      style={style}
     >
       {icon}
       <span>{children}</span>
@@ -128,52 +131,58 @@ const HomeDashboard = () => {
         Welcome to Your Dashboard
       </h1>
 
-      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-        <div className='sm:col-span-2 lg:col-span-1 order-2 sm:order-1'>
-          <h2 className='text-xl font-bold mb-4'>Quick Links</h2>
-          <div className='grid grid-cols-2 sm:grid-cols-1 gap-3'>
-            <NavigationButton
-              href='/resources'
-              icon={<MapPin className='w-5 h-5' />}
-            >
-              Find Resources
-            </NavigationButton>
-            <NavigationButton
-              href='/meetings'
-              icon={<MessageSquare className='w-5 h-5' />}
-            >
-              Talk with Mentor
-            </NavigationButton>
-            <NavigationButton
-              href='/community-chat'
-              icon={<Award className='w-5 h-5' />}
-            >
-              Community Chat
-            </NavigationButton>
-            <NavigationButton
-              href='/rewards'
-              icon={<DollarSign className='w-5 h-5' />}
-            >
-              Rewards
-            </NavigationButton>
-          </div>
-        </div>
+      <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
+  {/* Quick Links Section */}
+  <div className='lg:col-span-1 order-2 sm:order-1 flex flex-col'>
+    <h2 className='text-xl font-bold mb-4'>Quick Links</h2>
+    <div className='grid grid-cols-2 sm:grid-cols-1 gap-3 flex-grow'>
+      <NavigationButton
+        href='/resources'
+        icon={<MapPin className='w-5 h-5' />}
+        style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderRadius: '12px', padding: '8px' }}
+      >
+        Find Resources
+      </NavigationButton>
+      <NavigationButton
+        href='/meetings'
+        icon={<MessageSquare className='w-5 h-5' />}
+        style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderRadius: '12px', padding: '8px' }}
+      >
+        Talk with Mentor
+      </NavigationButton>
+      <NavigationButton
+        href='/community-chat'
+        icon={<Award className='w-5 h-5' />}
+        style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderRadius: '12px', padding: '8px' }}
+      >
+        Community Chat
+      </NavigationButton>
+      <NavigationButton
+        href='/rewards'
+        icon={<DollarSign className='w-5 h-5' />}
+        style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderRadius: '12px', padding: '8px' }}
+      >
+        Rewards
+      </NavigationButton>
+    </div>
+  </div>
 
-        <div className='sm:col-span-2 order-1 sm:order-2'>
-          <h2 className='text-xl font-bold mb-4'>Upcoming Events</h2>
-          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
-            {events.map((event) => (
-              <EventCard key={event.id} event={event} onRSVP={handleRSVP} />
-            ))}
-          </div>
-          <div className='mt-4 text-center sm:text-right'>
+  {/* Upcoming Events Section */}
+  <div className='lg:col-span-2 order-1 sm:order-2 flex flex-col'>
+    <h2 className='text-xl font-bold mb-4'>Upcoming Events</h2>
+    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 flex-grow'>
+      {events.map((event) => (
+        <EventCard key={event.id} event={event} onRSVP={handleRSVP} />
+      ))}
+    </div>
+  </div>
+</div>
+
+      <div className='mt-4 text-center sm:text-right'>
             <Link href='/events'>
               <Button variant='link'>View All Events</Button>
             </Link>
           </div>
-        </div>
-      </div>
-
       <div className='mt-8'>
         <YoutubeVideos />
       </div>

@@ -93,7 +93,7 @@ const CommunityChat: React.FC = () => {
   }
 
   return (
-    <div className='flex flex-col h-[600px] max-w-2xl mx-auto border rounded-lg overflow-hidden'>
+    <div className='flex flex-col h-[600px] max-w-2xl mx-auto border rounded-lg overflow-hidden' style={{background: 'white', border: '3px solid black'}}>
       <div className='flex-1 overflow-y-auto p-4 space-y-4'>
         {messages.map((message) => (
           <div key={message.id} className='flex items-start space-x-2'>
@@ -104,7 +104,7 @@ const CommunityChat: React.FC = () => {
               />
             </Avatar>
             <div>
-              <p className='font-semibold'>{message.userName}</p>
+              <h2 className='font-semibold' style={{fontSize: 16, color: 'black', fontWeight: 'bold'}}>{message.userName}</h2>
               <p className='text-sm'>{message.content}</p>
               <p className='text-xs text-gray-500'>
                 {new Date(message.createdAt).toLocaleString()}

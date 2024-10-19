@@ -18,7 +18,7 @@ const Navbar = () => {
   }, [isLoaded, isSignedIn, user, setPoints])
 
   return (
-    <div className='pl-2 pr-10 py-4 justify-between items-center inline-flex w-full bg-white shadow-sm'>
+    <div className='pl-2 pr-10 py-4 justify-between items-center inline-flex w-full bg-white shadow-sm bg-gradient-to-r from-blue-500 to-purple-600 p-6 mb-8 text-white'>
       <div className='grow shrink basis-0 h-10 px-4 justify-start items-center gap-2 flex'>
         <Link href='/'>
           <Image src={'/logo.png'} alt='logo' width={150} height={50} />
