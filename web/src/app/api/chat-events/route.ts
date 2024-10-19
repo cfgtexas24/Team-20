@@ -10,7 +10,7 @@ import { EventEmitter } from 'events'
 const eventEmitter = new EventEmitter()
 
 // Set up Prisma event listener
-// @ts-ignore
+// @ts-expect-error - Prisma.$on is not properly typed
 prisma.$on('create', (event: Prisma.MiddlewareParams) => {
   if (event.model === 'ChatMessage') {
     eventEmitter.emit('newMessage', event.args.data)
