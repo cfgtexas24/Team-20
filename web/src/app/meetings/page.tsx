@@ -1,5 +1,5 @@
 import React from 'react'
-import Link from 'next/link'
+import Link from 'next/link';
 
 const LiveCall = () => {
   return (
@@ -19,7 +19,8 @@ const LiveCall = () => {
         </Link>
       </div>
     </div>
-  )
+  );
 }
+
 
 export default LiveCall
