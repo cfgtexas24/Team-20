@@ -9,10 +9,10 @@ interface Reward {
 const Rewards: React.FC = () => {
   const [earnedPoints, setEarnedPoints] = useState<number>(1250);
   const [rewards, setRewards] = useState<Reward[]>([
-    { id: 1, name: "10% Discount", points: 500 },
-    { id: 2, name: "Free Coffee", points: 750 },
-    { id: 3, name: "Movie Ticket", points: 1000 },
-    { id: 4, name: "Gift Card", points: 2000 },
+    { id: 1, name: "Giftcard", points: 500 },
+    { id: 2, name: "Transportation voucher", points: 750 },
+    { id: 3, name: "Free meal", points: 1000 },
+    { id: 4, name: "Phone/Data credigit", points: 2000 },
   ]);
 
   return (
