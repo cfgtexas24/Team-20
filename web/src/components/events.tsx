@@ -1,151 +1,148 @@
-import React from 'react'
+'use client'
+
+import { useState } from 'react'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import YoutubeVideos from './youtube-videos'
+import {
+  CalendarDays,
+  MapPin,
+  MessageSquare,
+  Award,
+  DollarSign,
+} from 'lucide-react'
 
-interface EventItemProps {
-  icon: React.ReactNode
-  title: string
-  description: string
-  buttonText: string
-  additionalContent?: React.ReactNode
-}
-
-const EventItem: React.FC<EventItemProps> = ({
+const NavigationButton = ({
+  href,
   icon,
-  title,
-  description,
-  buttonText,
-  additionalContent,
+  children,
+}: {
+  href: string
+  icon: React.ReactNode
+  children: React.ReactNode
 }) => (
-  <div className='self-stretch p-6 bg-[#8e94aa]/10 rounded-2xl border border-[#8e94aa]/10 justify-start items-center gap-6 inline-flex'>
-    <div className='p-2 bg-gradient-to-b from-[#e0effc] to-[#ddcbfb] rounded-[999px] border border-[#b07afa]/50 flex-col justify-start items-start gap-2 inline-flex'>
-      {icon}
-    </div>
-    <div className='grow shrink basis-0 flex-col justify-center items-start gap-1 inline-flex'>
-      <div className='self-stretch text-[#393f55] text-lg font-bold'>
-        {title}
-      </div>
-      <div className='self-stretch text-[#6d748a] text-sm'>{description}</div>
-      {additionalContent}
-    </div>
+  <Link href={href} className='w-full'>
     <Button
       variant='outline'
-      className='px-2 py-1 bg-[#e9edfe] rounded-2xl shadow-inner border border-[#8e94aa]/30'
+      className='w-full mb-3 flex items-center justify-start space-x-2 py-6'
     >
-      {buttonText}
+      {icon}
+      <span>{children}</span>
+    </Button>
+  </Link>
+)
+
+const EventCard = ({ event, onRSVP }: any) => (
+  <div className='bg-white shadow-md rounded-lg p-4 mb-4'>
+    <h2 className='text-lg font-bold mb-2'>{event.name}</h2>
+    <p className='text-gray-600 text-sm mb-2 flex items-center'>
+      <CalendarDays className='w-4 h-4 mr-2' />
+      {event.dateTime}
+    </p>
+    <p className='text-gray-600 text-sm mb-4 flex items-center'>
+      <MapPin className='w-4 h-4 mr-2' />
+      {event.location}
+    </p>
+    <Button
+      onClick={() => onRSVP(event.id)}
+      variant={event.rsvped ? 'secondary' : 'default'}
+      className='w-full'
+    >
+      {event.rsvped ? 'Cancel RSVP' : 'RSVP'}
     </Button>
   </div>
 )
 
-interface SectionProps {
-  title: string
-  description: string
-  children: React.ReactNode
-  actionButton?: React.ReactNode
-}
+const HomeDashboard = () => {
+  const [events, setEvents] = useState([
+    {
+      id: 1,
+      name: 'Campus Tour',
+      dateTime: '2024-10-20 10:00 AM',
+      location: 'Main Campus',
+      rsvped: false,
+    },
+    {
+      id: 2,
+      name: 'Career Fair',
+      dateTime: '2024-10-25 1:00 PM',
+      location: 'Student Center',
+      rsvped: false,
+    },
+    {
+      id: 3,
+      name: 'Alumni Meetup',
+      dateTime: '2024-11-05 6:00 PM',
+      location: 'Downtown Conference Center',
+      rsvped: false,
+    },
+  ])
 
-const Section: React.FC<SectionProps> = ({
-  title,
-  description,
-  children,
-  actionButton,
-}) => (
-  <div className='self-stretch flex-col justify-start items-start gap-10 flex'>
-    <div className='self-stretch justify-start items-start gap-6 inline-flex'>
-      <div className='grow shrink basis-0 flex-col justify-start items-start gap-4 inline-flex'>
-        <div className='self-stretch h-[66px] flex-col justify-start items-start gap-2 flex'>
-          <div className='self-stretch justify-start items-center gap-3 inline-flex'>
-            <div className='justify-start items-center gap-1 flex'>
-              <div className='text-[#040816] text-[32px] font-black'>
-                {title}
-              </div>
-            </div>
+  const handleRSVP = (eventId: number) => {
+    setEvents(
+      events.map((event) =>
+        event.id === eventId ? { ...event, rsvped: !event.rsvped } : event
+      )
+    )
+  }
+
+  return (
+    <div className='container mx-auto px-4 py-6 sm:py-8'>
+      <h1 className='text-2xl sm:text-3xl font-bold mb-6 text-center sm:text-left'>
+        Welcome to Your Dashboard
+      </h1>
+
+      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
+        <div className='sm:col-span-2 lg:col-span-1 order-2 sm:order-1'>
+          <h2 className='text-xl font-bold mb-4'>Quick Links</h2>
+          <div className='grid grid-cols-2 sm:grid-cols-1 gap-3'>
+            <NavigationButton
+              href='/resource-map'
+              icon={<MapPin className='w-5 h-5' />}
+            >
+              Find Resources
+            </NavigationButton>
+            <NavigationButton
+              href='/mentor-chat'
+              icon={<MessageSquare className='w-5 h-5' />}
+            >
+              Talk with Mentor
+            </NavigationButton>
+            <NavigationButton
+              href='/points'
+              icon={<Award className='w-5 h-5' />}
+            >
+              Check Points
+            </NavigationButton>
+            <NavigationButton
+              href='/cash-out'
+              icon={<DollarSign className='w-5 h-5' />}
+            >
+              Cash Out
+            </NavigationButton>
           </div>
-          <div className='self-stretch text-[#393f55] text-sm'>
-            {description}
+        </div>
+
+        <div className='sm:col-span-2 order-1 sm:order-2'>
+          <h2 className='text-xl font-bold mb-4'>Upcoming Events</h2>
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
+            {events.map((event) => (
+              <EventCard key={event.id} event={event} onRSVP={handleRSVP} />
+            ))}
+          </div>
+          <div className='mt-4 text-center sm:text-right'>
+            <Link href='/events'>
+              <Button variant='link'>View All Events</Button>
+            </Link>
           </div>
         </div>
       </div>
-      {actionButton}
-    </div>
-    <div className='self-stretch flex-col justify-start items-start gap-4 flex'>
-      {children}
-    </div>
-  </div>
-)
 
-const EventsPage: React.FC = () => {
-  const currentEvents = [
-    {
-      icon: <div className='w-4 h-4 relative'></div>,
-      title: 'Select and replace',
-      description:
-        'Select all entities that match your query and replace them with an input',
-      buttonText: 'Set up',
-    },
-    {
-      icon: <div className='w-4 h-4 relative'></div>,
-      title: 'Schedule maintenance',
-      description: 'Schedule maintenance for when the app will shut down',
-      buttonText: 'Schedule',
-    },
-    {
-      icon: <div className='w-4 h-4 relative'></div>,
-      title: 'Fix broken nodes',
-      description: 'Run analyzis and fix broken entities',
-      buttonText: 'Run analyzis',
-    },
-  ]
-
-  const previousEvents = [
-    {
-      icon: <div className='w-4 h-4 relative'></div>,
-      title: 'Select and replace',
-      description: '',
-      buttonText: 'View logs',
-      additionalContent: (
-        <div className='justify-start items-center gap-2 inline-flex'>
-          <div className='h-[26px] px-2 py-1 bg-white rounded-lg border border-[#ccd2e8] justify-center items-center flex'>
-            <div className='text-[#6d748a] text-sm'>neutral-grey-600</div>
-          </div>
-          <div className='text-[#0a071b] text-sm'>-&gt;</div>
-          <div className='h-[26px] px-2 py-1 bg-white rounded-lg border border-[#ccd2e8] justify-center items-center flex'>
-            <div className='text-[#6d748a] text-sm'>neutral-grey-600</div>
-          </div>
-        </div>
-      ),
-    },
-    // Add more previous events as needed
-  ]
-
-  return (
-    <div className='w-full flex-col justify-start items-start gap-20 inline-flex'>
-      <Section
-        title='Events'
-        description='Create and manage events'
-        actionButton={
-          <Button
-            variant='secondary'
-            className='px-3 py-2 bg-[#e9edfe] rounded-xl shadow-inner border border-[#8e94aa]/30'
-          >
-            New event
-          </Button>
-        }
-      >
-        {currentEvents.map((event, index) => (
-          <EventItem key={index} {...event} />
-        ))}
-      </Section>
-
-      <Section title='Previous events' description='View past events'>
-        {previousEvents.map((event, index) => (
-          <EventItem key={index} {...event} />
-        ))}
-      </Section>
-
-      <YoutubeVideos />
+      <div className='mt-8'>
+        <YoutubeVideos />
+      </div>
     </div>
   )
 }
 
-export default EventsPage
+export default HomeDashboard

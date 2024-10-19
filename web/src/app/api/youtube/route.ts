@@ -6,7 +6,7 @@ import { env } from '@/env.mjs'
 const YOUTUBE_API_KEY = env.YOUTUBE_API_KEY
 
 export async function GET() {
-  const youtubeApiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=educational+content+for+veterans&type=video&key=${YOUTUBE_API_KEY}`
+  const youtubeApiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=financial+advisor+advice&type=video&key=${YOUTUBE_API_KEY}`
 
   try {
     const response = await axios.get(youtubeApiUrl)

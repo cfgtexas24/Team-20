@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState, ReactNode } from 'react'
+import { UserButton, useUser } from '@clerk/nextjs'
 import NotifyDialog from '@/components/notifyDialog'
 import { Button } from '@/components/ui/button'
 import {
@@ -15,7 +16,6 @@ import {
   Bell,
   Map,
 } from 'lucide-react'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Skeleton } from '@/components/ui/skeleton'
 
 interface NavButtonProps {
@@ -29,6 +29,7 @@ const Sidebar = () => {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const { user, isLoaded: isUserLoaded } = useUser()
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -100,30 +101,24 @@ const Sidebar = () => {
     </>
   )
 
-  const UserProfile = ({ isMobile = false }: { isMobile?: boolean }) => (
-    <div
-      className={`flex items-center gap-2 ${
-        isMobile
-          ? ''
-          : 'pl-2 pr-4 py-2 bg-[#8e94aa]/10 rounded-[999px] border border-[#8e94aa]/10'
-      }`}
-    >
-      <Avatar>
-        <AvatarImage src='/user.jpg' />
-        <AvatarFallback>CN</AvatarFallback>
-      </Avatar>
-      {!isMobile && (
-        <div className='flex flex-col'>
-          <div className="text-[#040816] text-base font-bold font-['Inter'] leading-tight">
-            Ephraim Sun
-          </div>
-          <div className="text-[#6d748a] text-xs font-normal font-['Inter'] leading-none">
-            Pending
-          </div>
+  const UserInfo = () => {
+    if (!isUserLoaded) {
+      return <Skeleton className='h-10 w-full' />
+    }
+    return (
+      <div className='flex items-center gap-3 bg-[#8e94aa]/10 p-2 rounded-[999px] w-full'>
+        <UserButton afterSignOutUrl='/' />
+        <div className='flex flex-col overflow-hidden'>
+          <span className="text-[#040816] text-sm font-semibold font-['Inter'] truncate">
+            {user?.fullName}
+          </span>
+          <span className="text-[#6d748a] text-xs font-normal font-['Inter'] truncate">
+            {user?.primaryEmailAddress?.emailAddress}
+          </span>
         </div>
-      )}
-    </div>
-  )
+      </div>
+    )
+  }
 
   return (
     <>
@@ -137,7 +132,7 @@ const Sidebar = () => {
           >
             {isMobileMenuOpen ? <X /> : <Menu />}
           </Button>
-          <UserProfile isMobile />
+          <UserButton afterSignOutUrl='/' />
         </div>
         <div className='flex items-center gap-4'>
           <div className="text-[#040816] text-sm font-semibold font-['Inter']">
@@ -157,11 +152,11 @@ const Sidebar = () => {
       )}
 
       {/* Desktop Sidebar */}
-      <div className='hidden lg:flex w-[280px] h-full p-4 bg-white  border border-l flex-col justify-between items-start gap-5'>
+      <div className='hidden lg:flex w-[280px] h-full p-4 bg-white border border-l flex-col justify-between items-start gap-5'>
         <div className='flex flex-col w-full'>
           <NavContent />
         </div>
-        {isLoading ? <Skeleton className='h-14 w-full' /> : <UserProfile />}
+        <UserInfo />
       </div>
     </>
   )
