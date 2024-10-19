@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button'
 import YoutubeVideos from './youtube-videos'
 import { MapPin, MessageSquare, Award, DollarSign } from 'lucide-react'
 import EventCard from './eventcard'
+import { toast } from '@/hooks/use-toast'
+import { usePoints } from '@/hooks/usePoints'
 
 const NavigationButton = ({
   href,
@@ -31,38 +33,95 @@ const HomeDashboard = () => {
   const [events, setEvents] = useState([
     {
       id: 1,
-      name: 'Campus Tour',
-      dateTime: '2024-10-20 10:00 AM',
-      location: 'Main Campus',
+      name: 'Grit & Growth 2024',
+      dateTime: '2024-11-09',
+      location: 'STORM Center',
+      description:
+        "STORM's 3rd Annual Grit & Growth Community Experience: 'Who I Choose to Become, I Will Become'. Join us for a day of inspiration and transformation!",
+      category: 'flagship',
       rsvped: false,
-      link: 'https://www.stormcohs.org/',
+      link: 'https://www.stormcohs.org/copy-of-events39393a52',
+      points: 300,
     },
     {
       id: 2,
-      name: 'Career Fair',
-      dateTime: '2024-10-25 1:00 PM',
-      location: 'Student Center',
+      name: 'North Texas Giving Day 2024',
+      dateTime: '2024-09-19',
+      location: 'Online',
+      description:
+        'Support STORM during North Texas Giving Day! Your donations help us continue providing free services to youth and young adults.',
+      category: 'flagship',
       rsvped: false,
-      link: 'https://www.stormcohs.org/',
+      link: 'https://www.stormcohs.org/newpage9ec8a741',
+      points: 200,
     },
     {
       id: 3,
-      name: 'Alumni Meetup',
-      dateTime: '2024-11-05 6:00 PM',
-      location: 'Downtown Conference Center',
+      name: 'Holiday Toy Drive',
+      dateTime: '2024-12-10 10:00 AM',
+      location: 'STORM Center',
+      description:
+        'Donate new, unwrapped toys to bring joy to children in need this holiday season.',
+      category: 'community',
       rsvped: false,
       link: 'https://www.stormcohs.org/',
+      points: 100,
     },
   ])
 
-  const handleRSVP = (eventId: number) => {
-    setEvents(
-      events.map((event) =>
-        event.id === eventId ? { ...event, rsvped: !event.rsvped } : event
-      )
-    )
-  }
+  const { addPoints, subtractPoints } = usePoints()
 
+  const handleRSVP = async (eventId: number, points: number) => {
+    try {
+      const event = events.find((e) => e.id === eventId)
+      if (!event) throw new Error('Event not found')
+
+      const action = event.rsvped ? 'subtract' : 'add'
+
+      // Update points on the server
+      const response = await fetch('/api/points', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action,
+          amount: points,
+        }),
+      })
+
+      if (!response.ok) throw new Error('Failed to update points')
+
+      // Update local state
+      setEvents(
+        events.map((event) =>
+          event.id === eventId ? { ...event, rsvped: !event.rsvped } : event
+        )
+      )
+
+      // Update global points state
+      if (action === 'add') {
+        addPoints(points)
+      } else {
+        subtractPoints(points)
+      }
+
+      // Show success toast
+      toast({
+        title: event.rsvped ? 'RSVP Cancelled' : 'RSVP Confirmed',
+        description: event.rsvped
+          ? `You've cancelled your RSVP for ${event.name}.`
+          : `You've RSVP'd for ${event.name} and earned ${points} points!`,
+      })
+    } catch (error) {
+      console.error('Error updating RSVP:', error)
+      toast({
+        title: 'Error',
+        description: 'Failed to update RSVP. Please try again.',
+        variant: 'destructive',
+      })
+    }
+  }
   return (
     <div className='container mx-auto px-4 py-6 sm:py-8'>
       <h1 className='text-2xl sm:text-3xl font-bold mb-6 text-center sm:text-left'>

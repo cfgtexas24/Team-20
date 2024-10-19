@@ -4,6 +4,7 @@ import './globals.css'
 import Sidebar from '@/components/sidebar'
 import Navbar from '@/components/navbar'
 import { ClerkProvider, SignedIn, SignedOut, SignIn } from '@clerk/nextjs'
+import { Toaster } from '@/components/ui/toaster'
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -41,6 +42,7 @@ export default function RootLayout({
                 <Sidebar />
                 <main className='flex-1 overflow-y-auto w-full px-4 md:px-8 lg:px-20 mt-8'>
                   {children}
+                  <Toaster />
                 </main>
               </div>
             </div>

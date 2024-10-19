@@ -1,9 +1,22 @@
-import React from 'react'
+'use client'
+import React, { useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Award } from 'lucide-react'
+import { useUser } from '@clerk/nextjs'
+import { usePoints } from '@/hooks/usePoints'
 
 const Navbar = () => {
+  const { isLoaded, isSignedIn, user } = useUser()
+  const { points, setPoints } = usePoints()
+
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      const userPoints = user.publicMetadata.points as number
+      setPoints(userPoints || 0)
+    }
+  }, [isLoaded, isSignedIn, user, setPoints])
+
   return (
     <div className='pl-2 pr-10 py-4 justify-between items-center inline-flex w-full bg-white shadow-sm'>
       <div className='grow shrink basis-0 h-10 px-4 justify-start items-center gap-2 flex'>
@@ -17,7 +30,7 @@ const Navbar = () => {
           <div className='px-3 py-2 rounded-full bg-yellow-100 hover:bg-yellow-200 transition-colors duration-200 flex items-center gap-2 cursor-pointer'>
             <Award className='w-5 h-5 text-yellow-600' />
             <div className="text-yellow-700 text-sm font-semibold font-['Inter']">
-              50 Points
+              {points} Points
             </div>
           </div>
         </Link>
