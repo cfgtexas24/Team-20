@@ -35,9 +35,11 @@ export default function RootLayout({
           <div className='h-16 z-10 w-full mb-6'>
             <Navbar />
           </div>
-          <div className='flex flex-col md:flex-row flex-1 border-b border'>
+          <div className='flex flex-col md:flex-row flex-1 w-full border-b border'>
             <Sidebar />
-            <div className='md:w-3/4 p-4 overflow-y-auto'>{children}</div>
+            <main className='flex-1 overflow-y-auto w-full px-4 md:px-8 lg:px-20 mt-8'>
+              {children}
+            </main>
           </div>
         </div>
       </body>
