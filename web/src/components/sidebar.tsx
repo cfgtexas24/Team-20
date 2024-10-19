@@ -19,6 +19,7 @@ import {
   Award,
   BookText,
   Projector,
+  ScanQrCode,
 } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import Link from 'next/link'
