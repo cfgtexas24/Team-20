@@ -1,13 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import {
-  Briefcase,
-  GraduationCap,
-  Heart,
-  Gift,
-} from 'lucide-react'
+import { Briefcase, GraduationCap, Heart, Gift } from 'lucide-react'
 import EventCard from '@/components/eventcard'
+import { toast } from '@/hooks/use-toast'
+import { usePoints } from '@/hooks/usePoints'
 
 interface Event {
   id: number
@@ -19,6 +16,7 @@ interface Event {
   attendees?: number
   rsvped: boolean
   link?: string
+  points: number
 }
 
 const EventCategory = ({
@@ -30,7 +28,7 @@ const EventCategory = ({
   title: string
   icon: React.ReactNode
   events: Event[]
-  onRSVP: (id: number) => void
+  onRSVP: (id: number, points: number) => Promise<void>
 }) => (
   <div className='mb-8'>
     <h2 className='text-2xl font-bold mb-4 flex items-center'>
@@ -39,7 +37,11 @@ const EventCategory = ({
     </h2>
     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
       {events.map((event) => (
-        <EventCard key={event.id} event={event} onRSVP={onRSVP} />
+        <EventCard
+          key={event.id}
+          event={event}
+          onRSVP={(id, points) => onRSVP(id, points)}
+        />
       ))}
     </div>
   </div>
@@ -58,6 +60,7 @@ const Events = () => {
       category: 'flagship',
       rsvped: false,
       link: 'https://www.stormcohs.org/copy-of-events39393a52',
+      points: 300,
     },
     {
       id: 2,
@@ -69,6 +72,7 @@ const Events = () => {
       category: 'flagship',
       rsvped: false,
       link: 'https://www.stormcohs.org/newpage9ec8a741',
+      points: 200,
     },
 
     // Community Service Events
@@ -82,6 +86,7 @@ const Events = () => {
       category: 'community',
       rsvped: false,
       link: 'https://www.stormcohs.org/',
+      points: 100,
     },
     {
       id: 4,
@@ -93,6 +98,7 @@ const Events = () => {
       category: 'community',
       rsvped: false,
       link: 'https://www.stormcohs.org/',
+      points: 100,
     },
     {
       id: 5,
@@ -104,6 +110,7 @@ const Events = () => {
       category: 'community',
       rsvped: false,
       link: 'https://www.stormcohs.org/',
+      points: 100,
     },
 
     // Career Development Events
@@ -118,6 +125,7 @@ const Events = () => {
       category: 'career',
       rsvped: false,
       link: 'https://www.stormcohs.org/',
+      points: 100,
     },
     {
       id: 7,
@@ -130,6 +138,7 @@ const Events = () => {
       category: 'career',
       rsvped: false,
       link: 'https://www.stormcohs.org/',
+      points: 100,
     },
 
     // Educational Events
@@ -144,6 +153,7 @@ const Events = () => {
       category: 'education',
       rsvped: false,
       link: 'https://www.stormcohs.org/',
+      points: 100,
     },
     {
       id: 9,
@@ -156,15 +166,62 @@ const Events = () => {
       category: 'education',
       rsvped: false,
       link: 'https://www.stormcohs.org/',
+      points: 100,
     },
   ])
 
-  const handleRSVP = (eventId: number) => {
-    setEvents(
-      events.map((event) =>
-        event.id === eventId ? { ...event, rsvped: !event.rsvped } : event
+  const { addPoints, subtractPoints } = usePoints()
+
+  const handleRSVP = async (eventId: number, points: number) => {
+    try {
+      const event = events.find((e) => e.id === eventId)
+      if (!event) throw new Error('Event not found')
+
+      const action = event.rsvped ? 'subtract' : 'add'
+
+      // Update points on the server
+      const response = await fetch('/api/points', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action,
+          amount: points,
+        }),
+      })
+
+      if (!response.ok) throw new Error('Failed to update points')
+
+      // Update local state
+      setEvents(
+        events.map((event) =>
+          event.id === eventId ? { ...event, rsvped: !event.rsvped } : event
+        )
       )
-    )
+
+      // Update global points state
+      if (action === 'add') {
+        addPoints(points)
+      } else {
+        subtractPoints(points)
+      }
+
+      // Show success toast
+      toast({
+        title: event.rsvped ? 'RSVP Cancelled' : 'RSVP Confirmed',
+        description: event.rsvped
+          ? `You've cancelled your RSVP for ${event.name}.`
+          : `You've RSVP'd for ${event.name} and earned ${points} points!`,
+      })
+    } catch (error) {
+      console.error('Error updating RSVP:', error)
+      toast({
+        title: 'Error',
+        description: 'Failed to update RSVP. Please try again.',
+        variant: 'destructive',
+      })
+    }
   }
 
   const flagshipEvents = events.filter((event) => event.category === 'flagship')

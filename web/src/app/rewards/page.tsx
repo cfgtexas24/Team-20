@@ -1,8 +1,10 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useUser } from '@clerk/nextjs'
 import { Button } from '@/components/ui/button'
 import { Gift, CreditCard, Bus, Coffee, Smartphone } from 'lucide-react'
+import { toast } from '@/hooks/use-toast'
 
 interface Reward {
   id: number
@@ -16,31 +18,62 @@ const RewardCard: React.FC<{
   reward: Reward
   earnedPoints: number
   onRedeem: (id: number) => void
-}> = ({ reward, earnedPoints, onRedeem }) => (
-  <div className='bg-white p-6 rounded-lg shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-300'>
-    <div className='flex items-center mb-4'>
-      <div className='mr-4 text-blue-500'>{reward.icon}</div>
-      <div>
-        <h3 className='text-lg font-semibold'>{reward.name}</h3>
-        <p className='text-gray-600 text-sm'>{reward.points} points</p>
+  onCashOut: (id: number) => void
+}> = ({ reward, earnedPoints, onRedeem, onCashOut }) => {
+  const handleRedeem = () => {
+    onRedeem(reward.id)
+    toast({
+      title: 'Reward Redeemed!',
+      description: `You've successfully redeemed ${reward.name}.`,
+    })
+  }
+
+  const handleCashOut = () => {
+    onCashOut(reward.id)
+    toast({
+      title: 'Points Cashed Out!',
+      description: `You've cashed out ${reward.points} points for ${reward.name}.`,
+    })
+  }
+
+  return (
+    <div className='bg-white p-6 rounded-lg shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-300'>
+      <div className='flex items-center mb-4'>
+        <div className='mr-4 text-blue-500'>{reward.icon}</div>
+        <div>
+          <h3 className='text-lg font-semibold'>{reward.name}</h3>
+          <p className='text-gray-600 text-sm'>{reward.points} points</p>
+        </div>
+      </div>
+      <p className='text-gray-600 mb-4 text-sm'>{reward.description}</p>
+      <div className='flex space-x-2'>
+        <Button
+          onClick={handleRedeem}
+          disabled={earnedPoints < reward.points}
+          variant={earnedPoints >= reward.points ? 'default' : 'secondary'}
+          className='flex-1'
+        >
+          {earnedPoints >= reward.points
+            ? 'Redeem'
+            : `Need ${reward.points - earnedPoints} more`}
+        </Button>
+        <Button
+          onClick={handleCashOut}
+          disabled={earnedPoints < reward.points}
+          variant='outline'
+          className='flex-1'
+        >
+          Cash Out
+        </Button>
       </div>
     </div>
-    <p className='text-gray-600 mb-4 text-sm'>{reward.description}</p>
-    <Button
-      onClick={() => onRedeem(reward.id)}
-      disabled={earnedPoints < reward.points}
-      variant={earnedPoints >= reward.points ? 'default' : 'secondary'}
-      className='w-full'
-    >
-      {earnedPoints >= reward.points
-        ? 'Redeem'
-        : `Need ${reward.points - earnedPoints} more points`}
-    </Button>
-  </div>
-)
+  )
+}
 
 const Rewards: React.FC = () => {
-  const [earnedPoints, setEarnedPoints] = useState<number>(1250)
+  const { isLoaded, isSignedIn, user } = useUser()
+  const [earnedPoints, setEarnedPoints] = useState<number>(0)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [rewards] = useState<Reward[]>([
     {
       id: 1,
@@ -73,12 +106,90 @@ const Rewards: React.FC = () => {
     },
   ])
 
-  const handleRedeem = (id: number) => {
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      const points = user.publicMetadata.points as number
+      setEarnedPoints(points || 0)
+      setIsLoading(false)
+    } else if (isLoaded && !isSignedIn) {
+      setIsLoading(false)
+    }
+  }, [isLoaded, isSignedIn, user])
+
+  const handleRedeem = async (id: number) => {
     const reward = rewards.find((r) => r.id === id)
     if (reward && earnedPoints >= reward.points) {
-      setEarnedPoints((prev) => prev - reward.points)
-      alert(`You've successfully redeemed ${reward.name}!`)
+      try {
+        const response = await fetch('/api/points', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            action: 'subtract',
+            amount: reward.points,
+          }),
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          setEarnedPoints(data.points)
+        } else {
+          throw new Error('Failed to update points')
+        }
+      } catch (error) {
+        console.error('Error updating points:', error)
+        toast({
+          title: 'Error',
+          description: 'Failed to redeem points. Please try again.',
+          variant: 'destructive',
+        })
+      }
     }
+  }
+
+  const handleCashOut = async (id: number) => {
+    const reward = rewards.find((r) => r.id === id)
+    if (reward && earnedPoints >= reward.points) {
+      try {
+        const response = await fetch('/api/points', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            action: 'subtract',
+            amount: reward.points,
+          }),
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          setEarnedPoints(data.points)
+          toast({
+            title: 'Cash Out Successful',
+            description: `You've cashed out ${reward.points} points for ${reward.name}.`,
+          })
+        } else {
+          throw new Error('Failed to update points')
+        }
+      } catch (error) {
+        console.error('Error updating points:', error)
+        toast({
+          title: 'Error',
+          description: 'Failed to cash out points. Please try again.',
+          variant: 'destructive',
+        })
+      }
+    }
+  }
+
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+
+  if (!isSignedIn) {
+    return <div>Please sign in to view and redeem rewards.</div>
   }
 
   return (
@@ -103,6 +214,7 @@ const Rewards: React.FC = () => {
             reward={reward}
             earnedPoints={earnedPoints}
             onRedeem={handleRedeem}
+            onCashOut={handleCashOut}
           />
         ))}
       </div>
