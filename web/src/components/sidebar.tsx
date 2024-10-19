@@ -18,6 +18,9 @@ import {
   CircleDollarSign,
   Award,
   ScanQrCode,
+  BookText,
+  Projector,
+  ScanQrCode,
 } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import Link from 'next/link'
@@ -105,7 +108,7 @@ const Sidebar = () => {
             <NavButton href='/community-chat' icon={Users}>
               Community Chat
             </NavButton>
-            <NavButton href='/meetings' icon={Users}>
+            <NavButton href='/meetings' icon={Projector}>
               Mentor Meetings
             </NavButton>
             <NavButton href='/resources' icon={Map}>
@@ -116,6 +119,9 @@ const Sidebar = () => {
             </NavButton>
             <NavButton href='/qr-code' icon={ScanQrCode}>
               My Pass
+            </NavButton>
+            <NavButton href='/forms' icon={BookText}>
+              User Onboarding
             </NavButton>
           </>
         )}

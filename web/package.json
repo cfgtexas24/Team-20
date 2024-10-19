@@ -12,6 +12,7 @@
     "@clerk/nextjs": "^5.7.5",
     "@dytesdk/react-ui-kit": "^2.0.5",
     "@dytesdk/react-web-core": "^2.1.5",
+    "@formfacade/embed-react": "^1.0.4",
     "@prisma/client": "^5.21.1",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.2",
