@@ -47,7 +47,7 @@ The STORM Center Virtual Drop-in Center is a digital platform developed during t
 
 ## Team Members
 
-- Albert Yin (Texas A&M University): Meeting video, login authentication, user onboarding forms (Google Form API)
+- Albert Yin (Texas A&M University): Mentor Meetings Page, login authentication, user onboarding page (Google Form API)
 - BranDon Brown (Florida A&M University): Events Page, Git, Typescript, Javascript, CSS
 - Blake Lee (University of Oklahoma): Resources Page, Google Maps integration, Chatbot, OpenAI integration
 - Ephraim Sun (Southern Methodist University): Infrastructure, Next.js layout, landing page, UI Design, YouTube API, community chat, QR code scanner
