@@ -125,6 +125,7 @@ const ResourceComponent: React.FC = () => {
         ) => {
           setIsLoading(false)
           if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+            console.log(results)
             const newLocations: Location[] = results.map((place) => ({
               lat: place.geometry?.location?.lat() || 0,
               lng: place.geometry?.location?.lng() || 0,
@@ -148,9 +149,9 @@ const ResourceComponent: React.FC = () => {
   }
 
   return (
-    <Card className='w-full max-w-4xl mx-auto'>
+    <Card className='w-full max-w-4xl mx-auto bg-gradient-to-r from-blue-500 to-purple-600 p-6 rounded-lg mb-8'>
       <CardHeader>
-        <CardTitle className='text-2xl sm:text-3xl text-center'>
+        <CardTitle className='text-2xl sm:text-3xl text-center' style={{color: "white", fontSize: 40}}>
           Find Local Resources
         </CardTitle>
       </CardHeader>
@@ -168,6 +169,7 @@ const ResourceComponent: React.FC = () => {
                 type='text'
                 className='w-full'
                 placeholder='Enter your location'
+                style = {{background: 'white', color: '#2d69fa'}}
               />
             </StandaloneSearchBox>
           </LoadScript>
@@ -184,6 +186,7 @@ const ResourceComponent: React.FC = () => {
               control: (base) => ({
                 ...base,
                 minHeight: '36px',
+                color: '#2d69fa'
               }),
             }}
           />
@@ -192,6 +195,7 @@ const ResourceComponent: React.FC = () => {
             onClick={handleSearch}
             className='w-full'
             disabled={isLoading}
+            style={{background: "white", color: "#2d69fa"}}
           >
             {isLoading ? <Spinner className='mr-2' /> : null}
             Search
@@ -255,11 +259,11 @@ const ResourceComponent: React.FC = () => {
 
           {locations.length > 0 && (
             <div className='mt-4'>
-              <h3 className='text-xl font-semibold mb-2'>Search Results</h3>
+              <h3 className='text-xl font-semibold mb-2' style={{color:'white'}}>Search Results</h3>
               <ul className='space-y-2'>
                 {locations.map((loc, index) => (
                   <li key={index} className='p-2 bg-gray-100 rounded'>
-                    <h4 className='font-medium'>{loc.name}</h4>
+                    <h4 className='font-medium' style={{fontWeight:"bold"}}>{loc.name}</h4>
                     <p className='text-sm text-gray-600'>{loc.address}</p>
                   </li>
                 ))}

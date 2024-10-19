@@ -39,9 +39,9 @@ export default function RootLayout({
               <div className='h-16 z-10 w-full mb-6'>
                 <Navbar />
               </div>
-              <div className='flex flex-col md:flex-row flex-1 w-full border-b border'>
+              <div className='flex flex-col md:flex-row flex-1 w-full border-b border' style={{background: '#F5F5DC', width: '100%', height: '100%'}}>
                 <Sidebar />
-                <main className='flex-1 overflow-y-auto w-full px-4 md:px-8 lg:px-20 mt-8'>
+                <main className='flex-1 overflow-y-auto w-full px-4 md:px-8 lg:px-20 mt-8' style={{background: '#F5F5DC', width: '100%', height: '100%'}}>
                   {children}
                   <Toaster />
                 </main>
