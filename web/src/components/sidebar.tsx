@@ -78,54 +78,6 @@ const Sidebar = () => {
      </Button>
    )
 
-<<<<<<< Updated upstream
-   const NavContent = () => (
-     <>
-       <div className='pb-5 border-b border-[#ccd2e8] flex-col justify-start items-start gap-1 flex'>
-         <NotifyDialog />
-         {isLoading ? (
-           <>
-             <Skeleton className='h-10 w-full mt-1' />
-             <Skeleton className='h-10 w-full mt-1' />
-           </>
-         ) : (
-           <>
-             <NavButton href='/events' icon={Calendar}>
-               Events
-             </NavButton>
-             <NavButton href='/search' icon={Search}>
-               Search
-             </NavButton>
-           </>
-         )}
-       </div>
-       <div className='flex flex-col justify-start items-start gap-1 mt-5'>
-         {isLoading ? (
-           <>
-             <Skeleton className='h-10 w-full mt-1' />
-             <Skeleton className='h-10 w-full mt-1' />
-             <Skeleton className='h-10 w-full mt-1' />
-           </>
-         ) : (
-           <>
-             <NavButton href='/community-chat' icon={Users}>
-               Community Chat
-             </NavButton>
-             <NavButton href='/meetings' icon={Users}>
-               Mentor Meetings
-             </NavButton>
-             <NavButton href='/resources' icon={Map}>
-               Resources
-             </NavButton>
-             <NavButton href='/rewards' icon={CircleDollarSign}>
-               Rewards
-             </NavButton>
-           </>
-         )}
-       </div>
-     </>
-   )
-=======
   const NavContent = () => (
     <>
       <div className='pb-5 border-b border-[#ccd2e8] flex-col justify-start items-start gap-1 flex'>
@@ -178,7 +130,6 @@ const Sidebar = () => {
       </div>
     </>
   )
->>>>>>> Stashed changes
 
    const UserInfo = () => {
      if (!isUserLoaded) {
