@@ -4,15 +4,12 @@ import Link from 'next/link';
 const LiveCall = () => {
   return (
     <div className='min-h-screen p-8'>
-      <h1>Welcome to the Zoom Page!</h1>
-      <Link href='/livevideo' className='text-blue-500 underline'>
-        Join a Zoom-like Meeting
+      <h1>Welcome to Storms Mentor Live Video!</h1>
+      <Link href='/livecall/live' className='text-blue-500 underline'>
+        Join Mentor Meeting
       </Link>
     </div>
   );
-}
-
-  </div>
 }
 
 export default LiveCall

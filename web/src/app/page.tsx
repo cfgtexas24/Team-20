@@ -1,12 +1,17 @@
-import EventsPage from '@/components/events'
-import YoutubeVideos from '@/components/youtube-videos'
+'use client'
 
-export default function Home() {
+import EventsPage from '@/components/events'
+
+const MyPage = () => {
   return (
-    <div className='w-full'>
-      {/* <h1>Welcome to YouTube Video Fetcher</h1> */}
-      {/* <YoutubeVideos /> */}
-      <EventsPage />
-    </div>
+    <>
+      <div className='w-full'>
+        {/* <h1>Welcome to YouTube Video Fetcher</h1> */}
+        {/* <YoutubeVideos /> */}
+        <EventsPage />
+      </div>
+    </>
   )
 }
+
+export default MyPage;

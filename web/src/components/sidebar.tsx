@@ -13,6 +13,7 @@ import {
   X,
   LucideIcon,
   Bell,
+  Map,
 } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -44,7 +45,7 @@ const Sidebar = () => {
 
   const NavButton = ({ href, icon: Icon, children }: NavButtonProps) => (
     <Button
-      variant={pathname.includes(href.slice(1)) ? 'default' : 'ghost'}
+      variant={pathname?.includes(href.slice(1)) ? 'default' : 'ghost'}
       className='self-stretch px-4 py-2 rounded-xl justify-start items-center gap-2 flex'
       onClick={() => handleNavigation(href)}
     >
@@ -90,8 +91,8 @@ const Sidebar = () => {
             <NavButton href='/livecall' icon={Users}>
               Live Call
             </NavButton>
-            <NavButton href='/video' icon={Video}>
-              Video
+            <NavButton href='/resources' icon={Map}>
+              Resources
             </NavButton>
           </>
         )}
