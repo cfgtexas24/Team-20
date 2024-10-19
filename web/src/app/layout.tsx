@@ -5,7 +5,7 @@ import Sidebar from '@/components/sidebar'
 import Navbar from '@/components/navbar'
 import { ClerkProvider, SignedIn, SignedOut, SignIn } from '@clerk/nextjs'
 import { Toaster } from '@/components/ui/toaster'
-import Chatbot from '@/components/chatbot'
+import Chatbot from '@/components/Chatbot'
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
