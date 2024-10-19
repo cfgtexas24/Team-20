@@ -17,7 +17,6 @@ import {
   Map,
   CircleDollarSign,
   Award,
-  ScanQrCode,
   BookText,
   Projector,
   ScanQrCode,
