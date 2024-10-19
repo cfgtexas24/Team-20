@@ -1,11 +1,9 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
-import "./globals.css";
+import type { Metadata } from 'next'
+import localFont from 'next/font/local'
+import './globals.css'
 import Sidebar from '@/components/sidebar'
 import Navbar from '@/components/navbar'
-import ClientLayout from './loginlayout';
-import { ClerkProvider } from '@clerk/clerk-react';
-
+import { ClerkProvider } from '@clerk/nextjs'
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -29,29 +27,24 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <>
-    <html lang='en'>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <div className='flex flex-col h-screen'>
-          <div className='h-16 z-10 w-full mb-6'>
-            <Navbar />
+    <ClerkProvider>
+      <html lang='en'>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <div className='flex flex-col h-screen'>
+            <div className='h-16 z-10 w-full mb-6'>
+              <Navbar />
+            </div>
+            <div className='flex flex-col md:flex-row flex-1 w-full border-b border'>
+              <Sidebar />
+              <main className='flex-1 overflow-y-auto w-full px-4 md:px-8 lg:px-20 mt-8'>
+                {children}
+              </main>
+            </div>
           </div>
-          <div className='flex flex-col md:flex-row flex-1 w-full border-b border'>
-            <Sidebar />
-            <main className='flex-1 overflow-y-auto w-full px-4 md:px-8 lg:px-20 mt-8'>
-              {children}
-            </main>
-          </div>
-        </div>
-      </body>
-    </html>
-    <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
-      <html lang="en">
-        <body>{children}</body>
+        </body>
       </html>
     </ClerkProvider>
-    </>
   )
 }
