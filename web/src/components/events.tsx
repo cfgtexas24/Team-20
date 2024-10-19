@@ -4,13 +4,8 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import YoutubeVideos from './youtube-videos'
-import {
-  CalendarDays,
-  MapPin,
-  MessageSquare,
-  Award,
-  DollarSign,
-} from 'lucide-react'
+import { MapPin, MessageSquare, Award, DollarSign } from 'lucide-react'
+import EventCard from './eventcard'
 
 const NavigationButton = ({
   href,
@@ -32,27 +27,6 @@ const NavigationButton = ({
   </Link>
 )
 
-const EventCard = ({ event, onRSVP }: any) => (
-  <div className='bg-white shadow-md rounded-lg p-4 mb-4'>
-    <h2 className='text-lg font-bold mb-2'>{event.name}</h2>
-    <p className='text-gray-600 text-sm mb-2 flex items-center'>
-      <CalendarDays className='w-4 h-4 mr-2' />
-      {event.dateTime}
-    </p>
-    <p className='text-gray-600 text-sm mb-4 flex items-center'>
-      <MapPin className='w-4 h-4 mr-2' />
-      {event.location}
-    </p>
-    <Button
-      onClick={() => onRSVP(event.id)}
-      variant={event.rsvped ? 'secondary' : 'default'}
-      className='w-full'
-    >
-      {event.rsvped ? 'Cancel RSVP' : 'RSVP'}
-    </Button>
-  </div>
-)
-
 const HomeDashboard = () => {
   const [events, setEvents] = useState([
     {
@@ -61,6 +35,7 @@ const HomeDashboard = () => {
       dateTime: '2024-10-20 10:00 AM',
       location: 'Main Campus',
       rsvped: false,
+      link: 'https://www.stormcohs.org/',
     },
     {
       id: 2,
@@ -68,6 +43,7 @@ const HomeDashboard = () => {
       dateTime: '2024-10-25 1:00 PM',
       location: 'Student Center',
       rsvped: false,
+      link: 'https://www.stormcohs.org/',
     },
     {
       id: 3,
@@ -75,6 +51,7 @@ const HomeDashboard = () => {
       dateTime: '2024-11-05 6:00 PM',
       location: 'Downtown Conference Center',
       rsvped: false,
+      link: 'https://www.stormcohs.org/',
     },
   ])
 
@@ -97,13 +74,13 @@ const HomeDashboard = () => {
           <h2 className='text-xl font-bold mb-4'>Quick Links</h2>
           <div className='grid grid-cols-2 sm:grid-cols-1 gap-3'>
             <NavigationButton
-              href='/resource-map'
+              href='/resources'
               icon={<MapPin className='w-5 h-5' />}
             >
               Find Resources
             </NavigationButton>
             <NavigationButton
-              href='/mentor-chat'
+              href='/meetings'
               icon={<MessageSquare className='w-5 h-5' />}
             >
               Talk with Mentor

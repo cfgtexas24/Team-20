@@ -1,16 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '@/components/ui/button'
 import {
-  CalendarDays,
-  MapPin,
-  Users,
   Briefcase,
   GraduationCap,
   Heart,
   Gift,
 } from 'lucide-react'
+import EventCard from '@/components/eventcard'
 
 interface Event {
   id: number
@@ -21,41 +18,8 @@ interface Event {
   category: string
   attendees?: number
   rsvped: boolean
+  link?: string
 }
-
-const EventCard = ({
-  event,
-  onRSVP,
-}: {
-  event: Event
-  onRSVP: (id: number) => void
-}) => (
-  <div className='bg-white shadow-md rounded-lg p-4 mb-4 border border-gray-200 hover:shadow-lg transition-shadow duration-300'>
-    <h2 className='text-lg font-bold mb-2'>{event.name}</h2>
-    <p className='text-gray-600 text-sm mb-2 flex items-center'>
-      <CalendarDays className='w-4 h-4 mr-2' />
-      {event.dateTime}
-    </p>
-    <p className='text-gray-600 text-sm mb-2 flex items-center'>
-      <MapPin className='w-4 h-4 mr-2' />
-      {event.location}
-    </p>
-    {event.attendees && (
-      <p className='text-gray-600 text-sm mb-4 flex items-center'>
-        <Users className='w-4 h-4 mr-2' />
-        {event.attendees} attendees
-      </p>
-    )}
-    <p className='text-gray-700 text-sm mb-4'>{event.description}</p>
-    <Button
-      onClick={() => onRSVP(event.id)}
-      variant={event.rsvped ? 'secondary' : 'default'}
-      className='w-full'
-    >
-      {event.rsvped ? 'Cancel RSVP' : 'RSVP'}
-    </Button>
-  </div>
-)
 
 const EventCategory = ({
   title,
@@ -93,6 +57,7 @@ const Events = () => {
         "STORM's 3rd Annual Grit & Growth Community Experience: 'Who I Choose to Become, I Will Become'. Join us for a day of inspiration and transformation!",
       category: 'flagship',
       rsvped: false,
+      link: 'https://www.stormcohs.org/copy-of-events39393a52',
     },
     {
       id: 2,
@@ -103,6 +68,7 @@ const Events = () => {
         'Support STORM during North Texas Giving Day! Your donations help us continue providing free services to youth and young adults.',
       category: 'flagship',
       rsvped: false,
+      link: 'https://www.stormcohs.org/newpage9ec8a741',
     },
 
     // Community Service Events
@@ -115,6 +81,7 @@ const Events = () => {
         'Donate new, unwrapped toys to bring joy to children in need this holiday season.',
       category: 'community',
       rsvped: false,
+      link: 'https://www.stormcohs.org/',
     },
     {
       id: 4,
@@ -125,6 +92,7 @@ const Events = () => {
         'Help keep our community warm by donating new or gently used winter coats.',
       category: 'community',
       rsvped: false,
+      link: 'https://www.stormcohs.org/',
     },
     {
       id: 5,
@@ -135,6 +103,7 @@ const Events = () => {
         'Join us in collecting non-perishable food items to stock our local food banks.',
       category: 'community',
       rsvped: false,
+      link: 'https://www.stormcohs.org/',
     },
 
     // Career Development Events
@@ -148,6 +117,7 @@ const Events = () => {
         'Connect with local employers and explore career opportunities.',
       category: 'career',
       rsvped: false,
+      link: 'https://www.stormcohs.org/',
     },
     {
       id: 7,
@@ -159,6 +129,7 @@ const Events = () => {
         'Learn how to create a standout resume that gets you noticed by employers.',
       category: 'career',
       rsvped: false,
+      link: 'https://www.stormcohs.org/',
     },
 
     // Educational Events
@@ -172,6 +143,7 @@ const Events = () => {
         'Gain essential knowledge about personal finance, budgeting, and saving.',
       category: 'education',
       rsvped: false,
+      link: 'https://www.stormcohs.org/',
     },
     {
       id: 9,
@@ -183,6 +155,7 @@ const Events = () => {
         'Improve your study habits and learn effective techniques for academic success.',
       category: 'education',
       rsvped: false,
+      link: 'https://www.stormcohs.org/',
     },
   ])
 
