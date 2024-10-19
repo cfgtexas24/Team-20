@@ -12,7 +12,4 @@ const LiveCall = () => {
   );
 }
 
-  </div>
-}
-
 export default LiveCall
