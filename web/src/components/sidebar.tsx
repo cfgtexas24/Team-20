@@ -17,12 +17,10 @@ import {
   Map,
   CircleDollarSign,
   Award,
-<<<<<<< Updated upstream
-=======
+
   ScanQrCode,
   BookText,
   Projector,
->>>>>>> Stashed changes
 } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import Link from 'next/link'
