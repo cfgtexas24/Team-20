@@ -1,15 +1,12 @@
-'use client'
+import ResourceComponent from '@/components/Autocomplete'
+import React from 'react'
 
-import ResourcePage from '@/components/Autocomplete'
-
-const MyPage = () => {
+const ResourcesPage = () => {
   return (
-    <div>
-      <p>My Page</p>
-      <ResourcePage />
-    </div>
-  );
-};
+    <>
+      <ResourceComponent />
+    </>
+  )
+}
 
-export default MyPage;
-
+export default ResourcesPage
