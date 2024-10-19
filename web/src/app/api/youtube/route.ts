@@ -21,7 +21,7 @@ export async function GET() {
   } catch (error) {
     console.error('Error fetching YouTube videos:', error)
     return NextResponse.json(
-      { error: 'Failed to fetch educational videos for veterans' },
+      { error: 'Failed to fetch educational videos' },
       { status: 500 }
     )
   }

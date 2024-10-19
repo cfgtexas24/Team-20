@@ -109,16 +109,16 @@ const HomeDashboard = () => {
               Talk with Mentor
             </NavigationButton>
             <NavigationButton
-              href='/points'
+              href='/community-chat'
               icon={<Award className='w-5 h-5' />}
             >
-              Check Points
+              Community Chat
             </NavigationButton>
             <NavigationButton
-              href='/cash-out'
+              href='/rewards'
               icon={<DollarSign className='w-5 h-5' />}
             >
-              Cash Out
+              Rewards
             </NavigationButton>
           </div>
         </div>

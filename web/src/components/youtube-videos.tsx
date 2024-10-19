@@ -39,7 +39,7 @@ const YoutubeVideos = () => {
     return (
       <div className='w-full mb-4 md:mb-8'>
         <h2 className='text-xl md:text-2xl font-bold mb-2 md:mb-4 px-4 md:px-0'>
-          Educational Videos for Veterans
+          Educational Videos
         </h2>
         <div className='flex space-x-3 md:space-x-4 overflow-x-auto pb-4 px-4 md:px-0'>
           {[...Array(5)].map((_, index) => (
@@ -65,7 +65,7 @@ const YoutubeVideos = () => {
   return (
     <div className='w-full mb-4 md:mb-8'>
       <h2 className='text-xl md:text-2xl font-bold mb-2 md:mb-4 px-4 md:px-0'>
-        Educational Videos for Veterans
+        Educational Videos
       </h2>
       <div className='overflow-x-auto pb-4 -mx-4 md:mx-0'>
         <div
