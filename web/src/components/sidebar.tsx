@@ -45,7 +45,7 @@ const Sidebar = () => {
 
   const NavButton = ({ href, icon: Icon, children }: NavButtonProps) => (
     <Button
-      variant={pathname.includes(href.slice(1)) ? 'default' : 'ghost'}
+      variant={pathname?.includes(href.slice(1)) ? 'default' : 'ghost'}
       className='self-stretch px-4 py-2 rounded-xl justify-start items-center gap-2 flex'
       onClick={() => handleNavigation(href)}
     >
