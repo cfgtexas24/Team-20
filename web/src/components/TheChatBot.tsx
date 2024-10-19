@@ -18,7 +18,7 @@ interface ChatbotScriptElement extends HTMLScriptElement {
   domain?: string
 }
 
-const Chatbot: React.FC = () => {
+const TheChatbot: React.FC = () => {
   useEffect(() => {
     // Add the chatbot configuration
     window.embeddedChatbotConfig = {
@@ -44,4 +44,4 @@ const Chatbot: React.FC = () => {
   return null
 }
 
-export default Chatbot
+export default TheChatbot
