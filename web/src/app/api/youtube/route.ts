@@ -1,8 +1,9 @@
-// app/api/youtube/route.ts
 import { NextResponse } from 'next/server'
 import axios from 'axios'
 
-const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY
+import { env } from '@/env.mjs'
+
+const YOUTUBE_API_KEY = env.YOUTUBE_API_KEY
 
 export async function GET() {
   const youtubeApiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=educational+content+for+veterans&type=video&key=${YOUTUBE_API_KEY}`

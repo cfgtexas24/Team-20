@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react'
 import { useDyteClient, DyteProvider } from '@dytesdk/react-web-core'
 import MyMeeting from '../../../LiveVideoComponents/MyMeeting'
+import { env } from '@/env.mjs'
 
 const LoadingFallback = () => (
   <div className='flex flex-col items-center justify-center h-screen bg-gray-100'>
@@ -17,11 +18,11 @@ const LiveVideoPage = () => {
   const [meeting, initMeeting] = useDyteClient()
 
   useEffect(() => {
-    const authToken = process.env.NEXT_PUBLIC_AUTH_TOKEN
+    const authToken1 = env.NEXT_PUBLIC_AUTH_TOKEN
 
-    if (authToken) {
+    if (authToken1) {
       initMeeting({
-        authToken,
+        authToken: authToken1,
         defaults: {
           audio: false,
           video: false,

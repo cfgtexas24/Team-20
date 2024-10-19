@@ -10,6 +10,7 @@ import {
 import { Button } from './ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
+import { env } from '@/env.mjs'
 
 const CallDialog = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -26,7 +27,7 @@ const CallDialog = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          toPhoneNumber: process.env.NEXT_PUBLIC_PHONE_NUMBER,
+          toPhoneNumber: env.NEXT_PUBLIC_PHONE_NUMBER,
           fromPhoneNumber: 'YOUR_PHONE_NUMBER', // replace with actual phone number
         }),
       })
@@ -37,7 +38,7 @@ const CallDialog = () => {
       }
 
       // If SMS sent successfully, initiate the call
-      window.location.href = `tel:${process.env.NEXT_PUBLIC_PHONE_NUMBER}`
+      window.location.href = `tel:${env.NEXT_PUBLIC_PHONE_NUMBER}`
       setIsOpen(false)
     } catch (error) {
       console.error('Error during call or SMS:', error)

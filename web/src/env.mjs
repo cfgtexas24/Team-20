@@ -18,6 +18,10 @@ export const env = createEnv({
         description: 'This gets updated depending on your environment',
       })
       .default('development'),
+    TWILIO_ACCOUNT_SID: z.string().min(1),
+    TWILIO_AUTH_TOKEN: z.string().min(1),
+    TWILIO_PHONE_NUMBER: z.string().min(1),
+    STRING_64: z.string().min(1),
   },
   /*
    * Environment variables available on the client (and server).
@@ -25,12 +29,11 @@ export const env = createEnv({
    * 💡 You'll get type errors if these are not prefixed with NEXT_PUBLIC_.
    */
   client: {
-    NEXT_PUBLIC_APP_URL: z.string().min(1),
     NEXT_PUBLIC_AUTH_TOKEN: z.string().min(1),
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().min(1),
     NEXT_PUBLIC_DYTE_CLIENT_ID: z.string().min(1),
     NEXT_PUBLIC_DYTE_AUTH_TOKEN: z.string().min(1),
-    STRING_64: z.string().min(1),
+    NEXT_PUBLIC_PHONE_NUMBER: z.string().min(1),
   },
   /*
    * Due to how Next.js bundles environment variables on Edge and Client,
@@ -51,5 +54,9 @@ export const env = createEnv({
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
+    TWILIO_PHONE_NUMBER: process.env.TWILIO_PHONE_NUMBER,
+    TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN,
+    TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID,
+    NEXT_PUBLIC_PHONE_NUMBER: process.env.NEXT_PUBLIC_PHONE_NUMBER,
   },
 })
