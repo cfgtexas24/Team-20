@@ -3,7 +3,7 @@ import localFont from 'next/font/local'
 import './globals.css'
 import Sidebar from '@/components/sidebar'
 import Navbar from '@/components/navbar'
-import { ClerkProvider } from '@clerk/nextjs'
+import { ClerkProvider, SignedIn, SignedOut, SignIn } from '@clerk/nextjs'
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -32,17 +32,24 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <div className='flex flex-col h-screen'>
-            <div className='h-16 z-10 w-full mb-6'>
-              <Navbar />
+          <SignedIn>
+            <div className='flex flex-col h-screen'>
+              <div className='h-16 z-10 w-full mb-6'>
+                <Navbar />
+              </div>
+              <div className='flex flex-col md:flex-row flex-1 w-full border-b border'>
+                <Sidebar />
+                <main className='flex-1 overflow-y-auto w-full px-4 md:px-8 lg:px-20 mt-8'>
+                  {children}
+                </main>
+              </div>
             </div>
-            <div className='flex flex-col md:flex-row flex-1 w-full border-b border'>
-              <Sidebar />
-              <main className='flex-1 overflow-y-auto w-full px-4 md:px-8 lg:px-20 mt-8'>
-                {children}
-              </main>
+          </SignedIn>
+          <SignedOut>
+            <div className='flex items-center justify-center w-screen h-screen'>
+              <SignIn />
             </div>
-          </div>
+          </SignedOut>
         </body>
       </html>
     </ClerkProvider>
