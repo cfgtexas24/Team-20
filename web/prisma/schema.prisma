@@ -33,6 +33,7 @@ model Avatar {
   id        Int      @id @default(autoincrement())
   user      User     @relation(fields: [userId], references: [id])
   userId    Int      @unique
+  imageUrl  String
   clothes   Clothing[]
 }
 
@@ -42,6 +43,7 @@ model Clothing {
   price     Int
   avatars   Avatar[] // No need to define `@relation` here for many-to-many
   purchases Purchase[]
+  imageUrl String // URL or path to the image file
 }
 
 model Purchase {
