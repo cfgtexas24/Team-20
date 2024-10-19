@@ -5,3 +5,6 @@ export default function Home() {
     <div>
       <h1>Welcome to YouTube Video Fetcher</h1>
       <YoutubeVideos />
+    </div>
+  );
+}
