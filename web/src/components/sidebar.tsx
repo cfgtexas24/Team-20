@@ -15,8 +15,11 @@ import {
   LucideIcon,
   Bell,
   Map,
+  CircleDollarSign,
+  Award,
 } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
+import Link from 'next/link'
 
 interface NavButtonProps {
   href: string
@@ -86,14 +89,17 @@ const Sidebar = () => {
           </>
         ) : (
           <>
-            <NavButton href='/groups' icon={Users}>
-              Groups
+            <NavButton href='/community-chat' icon={Users}>
+              Community Chat
             </NavButton>
-            <NavButton href='/livecall' icon={Users}>
-              Live Call
+            <NavButton href='/meetings' icon={Users}>
+              Mentor Meetings
             </NavButton>
             <NavButton href='/resources' icon={Map}>
               Resources
+            </NavButton>
+            <NavButton href='/rewards' icon={CircleDollarSign}>
+              Rewards
             </NavButton>
           </>
         )}
@@ -135,9 +141,14 @@ const Sidebar = () => {
           <UserButton afterSignOutUrl='/' />
         </div>
         <div className='flex items-center gap-4'>
-          <div className="text-[#040816] text-sm font-semibold font-['Inter']">
-            50 points
-          </div>
+          <Link href='/rewards' passHref>
+            <div className='px-3 py-2 rounded-full bg-yellow-100 hover:bg-yellow-200 transition-colors duration-200 flex items-center gap-2 cursor-pointer'>
+              <Award className='w-4 h-4 text-yellow-600' />
+              <div className="text-yellow-700 text-sm font-semibold font-['Inter']">
+                50 points
+              </div>
+            </div>
+          </Link>
           <Button size='icon' variant='outline'>
             <Bell className='h-4 w-4' />
           </Button>
