@@ -8,8 +8,7 @@ const EventCard = ({ event, onRSVP }: any) => {
       <p className="text-gray-600 mb-4">{event.location}</p>
       <button
         onClick={() => onRSVP(event.id)}
-        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-      >
+        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
         RSVP
       </button>
     </div>
@@ -18,12 +17,12 @@ const EventCard = ({ event, onRSVP }: any) => {
 
 const Events = () => {
   const [events, setEvents] = useState([
-    { id: 1, name: 'Campus Tour', dateTime: '2024-10-20 10:00 AM', location: 'Main Campus', rsvped: false },
-    { id: 2, name: 'Career Fair', dateTime: '2024-10-25 1:00 PM', location: 'Student Center', rsvped: false },
-    { id: 3, name: 'Alumni Meetup', dateTime: '2024-11-05 6:00 PM', location: 'Downtown Conference Center', rsvped: false },
+    { id: 1, name: 'Feed The Future', dateTime: '2024-10-20 10:00 AM', location: 'JPMorgan Plano, TX ', rsvped: false },
+    { id: 2, name: 'Clothing Drive', dateTime: '2024-10-25 1:00 PM', location: 'Student Center', rsvped: false },
+    { id: 3, name: 'Path to Park', dateTime: '2024-11-05 6:00 PM', location: 'Downtown Park', rsvped: false },
   ]);
 
-  const handleRSVP = (eventId) => {
+  const handleRSVP = (eventId: any) => {
     setEvents(events.map(event =>
       event.id === eventId ? { ...event, rsvped: !event.rsvped } : event
     ));
