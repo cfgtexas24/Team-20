@@ -1,88 +1,89 @@
 import React, { useState } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
-// Your Google Maps API key
-const API_KEY = ''; 
-
 interface Location {
-  lat: number;
-  lng: number;
-  name: string;
+  lat: number
+  lng: number
+  name: string
 }
 
 const MapComponent: React.FC = () => {
-  const [city, setCity] = useState<string>('');
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [locations, setLocations] = useState<Location[]>([]);
-  
+  const [city, setCity] = useState<string>('')
+  const [searchTerm, setSearchTerm] = useState<string>('')
+  const [locations, setLocations] = useState<Location[]>([])
+
   const mapContainerStyle = {
-    height: "400px",
-    width: "100%"
-  };
+    height: '400px',
+    width: '100%',
+  }
 
   const defaultCenter = {
     lat: 37.7749, // Default to San Francisco
-    lng: -122.4194
-  };
+    lng: -122.4194,
+  }
 
   const handleSearch = () => {
     if (searchTerm && city) {
       const service = new google.maps.places.PlacesService(
         document.createElement('div')
-      );
-      
+      )
+
       const request = {
         query: `${searchTerm} in ${city}`,
-        fields: ['name', 'geometry']
-      };
-      
+        fields: ['name', 'geometry'],
+      }
+
       service.textSearch(request, (results, status) => {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
-          const newLocations = results?.map(place => ({
-            lat: place.geometry?.location?.lat() || 0,
-            lng: place.geometry?.location?.lng() || 0,
-            name: place.name
-          })) || [];
-          setLocations(newLocations);
+          const newLocations =
+            results?.map((place) => ({
+              lat: place.geometry?.location?.lat() || 0,
+              lng: place.geometry?.location?.lng() || 0,
+              name: place.name,
+            })) || []
+          setLocations(newLocations as Location[])
         }
-      });
+      })
     }
-  };
+  }
 
   return (
     <div>
       <h2>Search for Locations</h2>
-      <input 
-        type="text" 
-        placeholder="Search Term" 
+      <input
+        type='text'
+        placeholder='Search Term'
         value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)} 
+        onChange={(e) => setSearchTerm(e.target.value)}
       />
-      <input 
-        type="text" 
-        placeholder="City" 
+      <input
+        type='text'
+        placeholder='City'
         value={city}
-        onChange={(e) => setCity(e.target.value)} 
+        onChange={(e) => setCity(e.target.value)}
       />
       <button onClick={handleSearch}>Search</button>
 
-      <LoadScript googleMapsApiKey={API_KEY} libraries={['places']}>
+      <LoadScript
+        googleMapsApiKey={process.env.GOOGLE_API_KEY!}
+        libraries={['places']}
+      >
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
           center={defaultCenter}
           zoom={12}
         >
           {locations.map((loc, index) => (
-            <Marker 
-              key={index} 
-              position={{ lat: loc.lat, lng: loc.lng }} 
+            <Marker
+              key={index}
+              position={{ lat: loc.lat, lng: loc.lng }}
               title={loc.name}
             />
           ))}
         </GoogleMap>
       </LoadScript>
     </div>
-  );
-};
+  )
+}
 
 export default MapComponent;
