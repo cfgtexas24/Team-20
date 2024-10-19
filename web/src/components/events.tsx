@@ -120,8 +120,6 @@ const EventsPage: React.FC = () => {
 
   return (
     <div className='w-full flex-col justify-start items-start gap-20 inline-flex'>
-      <YoutubeVideos />
-
       <Section
         title='Events'
         description='Create and manage events'
@@ -144,6 +142,8 @@ const EventsPage: React.FC = () => {
           <EventItem key={index} {...event} />
         ))}
       </Section>
+
+      <YoutubeVideos />
     </div>
   )
 }
