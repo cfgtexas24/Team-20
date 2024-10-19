@@ -22,23 +22,23 @@ const Events = () => {
   const [events, setEvents] = useState([
     {
       id: 1,
-      name: 'Campus Tour',
+      name: 'Feed the Future',
       dateTime: '2024-10-20 10:00 AM',
-      location: 'Main Campus',
+      location: 'JPMorgan Plano, TX',
       rsvped: false,
     },
     {
       id: 2,
-      name: 'Career Fair',
+      name: 'Clothing Drive',
       dateTime: '2024-10-25 1:00 PM',
       location: 'Student Center',
       rsvped: false,
     },
     {
       id: 3,
-      name: 'Alumni Meetup',
+      name: 'Path to Park',
       dateTime: '2024-11-05 6:00 PM',
-      location: 'Downtown Conference Center',
+      location: 'Downtown Park',
       rsvped: false,
     },
   ])
